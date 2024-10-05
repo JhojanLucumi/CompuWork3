@@ -1,5 +1,3 @@
-package Main;
-
 import Clases.Departamento;
 import Clases.Empleado;
 import Clases.EmpleadoFactory;
