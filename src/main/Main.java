@@ -2,30 +2,27 @@ package main;
 
 import Clases.Departamento;
 import Clases.Empleado;
-import Clases.EmpleadoPermanente;
-import Clases.EmpleadoTemporal;
+import Clases.EmpleadoFactory;
 import Controlador.DepartamentoController;
 import Controlador.ReporteController;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Scanner;
+import java.util.Objects;
 
 public class Main {
 
-    private static List<Empleado> empleados = new ArrayList<>();
-    private static List<Departamento> departamentos = new ArrayList<>();
+    private static final List<Empleado> empleados = new ArrayList<>();
+    private static final List<Departamento> departamentos = new ArrayList<>();
     private static DepartamentoController departamentoController = new DepartamentoController();
     private static ReporteController reporteController = new ReporteController();
 
     public static void main(String[] args) {
         crearInterfazGrafica();
-        // Puedes llamar a la consola como un metodo separado, si lo deseas.
     }
 
     private static void crearInterfazGrafica() {
@@ -104,14 +101,14 @@ public class Main {
                 String sexo = (String) sexoBox.getSelectedItem();
                 String tipo = (String) tipoBox.getSelectedItem();
 
-                if (tipo.equalsIgnoreCase("Permanente")) {
+                if (Objects.requireNonNull(tipo).equalsIgnoreCase("Permanente")) {
                     float salarioBase = Float.parseFloat(salarioBaseField.getText());
-                    empleados.add(EmpleadoFactory.crearEmpleado("permanente", id, nombre, edad, sexo, new Date(), "Seguro Médico", salarioBase, null, 0));
-                    JOptionPane.showMessageDialog(null, "Empleado creado.");
+                    empleados.add(EmpleadoFactory.crearEmpleado("permanente", id, nombre, edad, sexo, new Date(), "Seguro Médico", salarioBase, null, 0f));
+                    JOptionPane.showMessageDialog(null, "Empleado permanente creado.");
                 } else if (tipo.equalsIgnoreCase("Temporal")) {
                     float tasaPorHora = Float.parseFloat(tasaPorHoraField.getText());
-                    empleados.add(EmpleadoFactory.crearEmpleado("temporal", id, nombre, edad, sexo, new Date(), null, 0, new Date(), tasaPorHora));
-                    JOptionPane.showMessageDialog(null, "Empleado creado.");
+                    empleados.add(EmpleadoFactory.crearEmpleado("temporal", id, nombre, edad, sexo, new Date(), null, 0f, new Date(), tasaPorHora));
+                    JOptionPane.showMessageDialog(null, "Empleado temporal creado.");
                 }
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, "Error en los datos ingresados. Por favor, verifica los campos.");
@@ -120,7 +117,27 @@ public class Main {
     }
 
     private static void verEmpleados() {
-        // Implementar la lógica para ver empleados
+        StringBuilder sb = new StringBuilder();
+        if (empleados.isEmpty()) {
+            sb.append("No hay empleados registrados.");
+        } else {
+            for (Empleado empleado : empleados) {
+                sb.append("ID: ").append(empleado.getId())
+                        .append(", Nombre: ").append(empleado.getNombre())
+                        .append(", Edad: ").append(empleado.getEdad())
+                        .append(", Departamento: ").append(empleado.getDepartamento() != null ? empleado.getDepartamento().getNombre() : "No asignado")
+                        .append("\n");
+            }
+        }
+        JOptionPane.showMessageDialog(null, sb.toString(), "Lista de Empleados", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    private static void actualizarEmpleado() {
+        // Implementar la lógica para actualizar un empleado
+    }
+
+    private static void eliminarEmpleado() {
+        // Implementar la lógica para eliminar un empleado
     }
 
     private static void agregarDepartamento() {
@@ -149,7 +166,18 @@ public class Main {
     }
 
     private static void verDepartamentos() {
-        // Implementar la lógica para ver departamentos
+        StringBuilder sb = new StringBuilder();
+        if (departamentos.isEmpty()) {
+            sb.append("No hay departamentos registrados.");
+        } else {
+            for (Departamento departamento : departamentos) {
+                sb.append("ID: ").append(departamento.getId())
+                        .append(", Nombre: ").append(departamento.getNombre())
+                        .append(", Jefe: ").append(departamento.getJefe())
+                        .append("\n");
+            }
+        }
+        JOptionPane.showMessageDialog(null, sb.toString(), "Lista de Departamentos", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private static void modificarDepartamento() {
@@ -161,26 +189,62 @@ public class Main {
     }
 
     private static void asignarEmpleado() {
-        // Implementar la lógica para asignar empleado a departamento
+        Empleado empleado = null;
+        Departamento departamento = null;
+        System.out.println("Empleado o Departamento no pueden ser null.");
+        return;
+
+        // Agregar el empleado al departamento
     }
 
-    // Métodos para buscar empleados y departamentos (si es necesario)
 
     private static Empleado buscarEmpleadoPorID(int id) {
+        if (empleados.isEmpty()) {
+            System.out.println("La lista de empleados está vacía o no ha sido inicializada.");
+            return null;
+        }
+
         for (Empleado empleado : empleados) {
             if (empleado.getId() == id) {
                 return empleado;
             }
         }
+
+        System.out.println("Empleado con ID " + id + " no encontrado.");
         return null;
     }
 
+    // Metodo para buscar un departamento por su ID
     private static Departamento buscarDepartamentoPorID(int id) {
+        if (departamentos.isEmpty()) {
+            System.out.println("La lista de departamentos está vacía o no ha sido inicializada.");
+            return null;
+        }
+
         for (Departamento departamento : departamentos) {
             if (departamento.getId() == id) {
                 return departamento;
             }
         }
+
+        System.out.println("Departamento con ID " + id + " no encontrado.");
         return null;
     }
+
+    public static DepartamentoController getDepartamentoController() {
+        return departamentoController;
+    }
+
+    public static void setDepartamentoController(DepartamentoController departamentoController) {
+        Main.departamentoController = departamentoController;
+    }
+
+    public static ReporteController getReporteController() {
+        return reporteController;
+    }
+
+    public static void setReporteController(ReporteController reporteController) {
+        Main.reporteController = reporteController;
+    }
 }
+

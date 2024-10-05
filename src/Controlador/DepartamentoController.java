@@ -8,15 +8,21 @@ import java.util.List;
 
 public class DepartamentoController {
     // Lista de departamentos
-    private List<Departamento> departamentos;
+    private final List<Departamento> departamentos;
+    private int siguienteIdDepartamento;
 
     // Constructor
     public DepartamentoController() {
         departamentos = new ArrayList<>();
+        siguienteIdDepartamento = 1;  // Inicializa con un ID único inicial
     }
 
     // Metodo para agregar un nuevo departamento
-    public void agregarDepartamento(int id, String nombre, String jefeDepartamento, String descripcion) {
+    public void agregarDepartamento(String nombre) {
+        int id = siguienteIdDepartamento++;  // Genera un ID único
+        String jefeDepartamento = "";  // Si no se pasa un jefe, se deja vacío
+        String descripcion = "";       // Si no se pasa una descripción, se deja vacío
+
         Departamento departamento = new Departamento(id, nombre, jefeDepartamento, descripcion);
         departamentos.add(departamento);
         System.out.println("Departamento " + nombre + " agregado correctamente.");
@@ -47,6 +53,7 @@ public class DepartamentoController {
         Departamento departamento = obtenerDepartamento(nombreDepartamento);
         if (departamento != null) {
             departamento.agregarEmpleado(empleado);
+            System.out.println("Empleado agregado al departamento " + nombreDepartamento);
             return true;
         }
         System.out.println("Departamento " + nombreDepartamento + " no encontrado.");
@@ -57,10 +64,17 @@ public class DepartamentoController {
     public boolean eliminarEmpleadoDeDepartamento(String nombreDepartamento, int idEmpleado) {
         Departamento departamento = obtenerDepartamento(nombreDepartamento);
         if (departamento != null) {
-            departamento.removerEmpleado(idEmpleado);
-            return true;
+            Empleado empleado = departamento.buscarEmpleado(idEmpleado);
+            if (empleado != null) {
+                departamento.removerEmpleado(idEmpleado);
+                System.out.println("Empleado con ID " + idEmpleado + " eliminado del departamento " + nombreDepartamento);
+                return true;
+            } else {
+                System.out.println("Empleado con ID " + idEmpleado + " no encontrado en el departamento " + nombreDepartamento);
+            }
+        } else {
+            System.out.println("Departamento " + nombreDepartamento + " no encontrado.");
         }
-        System.out.println("Departamento " + nombreDepartamento + " no encontrado.");
         return false;
     }
 

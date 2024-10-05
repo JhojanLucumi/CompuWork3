@@ -8,7 +8,7 @@ import Clases.EmpleadoTemporal;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -47,21 +47,22 @@ public class DepartamentoTest {
     void testAgregarEmpleadoADepartamento() {
         // Agregar un departamento y un empleado
         departamentoController.agregarDepartamento("IT");
-        Empleado empleado = new EmpleadoPermanente("Jhojan", 1, null, 5000);
+        Empleado empleado;
+        empleado = new EmpleadoPermanente(1, "Jhojan", 20, "M", new Date(), "Seguro", 5000F);
         boolean agregado = departamentoController.agregarEmpleadoADepartamento("IT", empleado);
 
         assertTrue(agregado, "El empleado debe ser agregado al departamento 'IT'");
 
         List<Empleado> empleados = departamentoController.obtenerEmpleadosDeDepartamento("IT");
         assertEquals(1, empleados.size(), "El departamento 'IT' debe tener 1 empleado");
-        assertEquals("Jhojan", empleados.get(0).getNombre(), "El nombre del empleado debe ser 'Jhojan'");
+        assertEquals("Jhojan", empleados.getFirst().getNombre(), "El nombre del empleado debe ser 'Jhojan'");
     }
 
     @Test
     void testEliminarEmpleadoDeDepartamento() {
         // Agregar un departamento y un empleado, luego eliminar al empleado
         departamentoController.agregarDepartamento("Recursos Humanos");
-        Empleado empleado = new EmpleadoTemporal("Carlos", 2, null, 12);
+        Empleado empleado = new EmpleadoTemporal(2, "Carlos", 25, "M", new Date(), departamentoController.obtenerDepartamento("Recursos Humanos"), 100);
         departamentoController.agregarEmpleadoADepartamento("Recursos Humanos", empleado);
 
         boolean eliminado = departamentoController.eliminarEmpleadoDeDepartamento("Recursos Humanos", 2);
@@ -86,8 +87,8 @@ public class DepartamentoTest {
     void testObtenerEmpleadosDeDepartamento() {
         // Agregar empleados a un departamento y obtener la lista
         departamentoController.agregarDepartamento("Soporte Técnico");
-        Empleado empleado1 = new EmpleadoPermanente("Ana", 3, null, 4000);
-        Empleado empleado2 = new EmpleadoTemporal("Luis", 4, null, 6);
+        Empleado empleado1 = new EmpleadoPermanente(3, "Ana", 30, "F", new Date(), "Beneficios Médicos", 4000F);
+        Empleado empleado2 = new EmpleadoTemporal(4, "Luis", 25, "M", new Date(), departamentoController.obtenerDepartamento("Soporte Técnico"), 100);
 
         departamentoController.agregarEmpleadoADepartamento("Soporte Técnico", empleado1);
         departamentoController.agregarEmpleadoADepartamento("Soporte Técnico", empleado2);

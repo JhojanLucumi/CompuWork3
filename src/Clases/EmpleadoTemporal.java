@@ -5,15 +5,19 @@ import java.util.concurrent.TimeUnit;
 
 public class EmpleadoTemporal extends Empleado {
     private Date fechaFinalContrato;
-    private float tasaPorHora; // Pago por hora
-    private int horasTrabajadas; // Asumiendo que almacenas horas trabajadas para calcular el salario
+    private float tasaPorHora;       // Pago por hora
+    private int horasTrabajadas;     // Horas trabajadas para calcular el salario
 
-    // Constructor
-    public EmpleadoTemporal(int id, String nombre, int edad, String sexo, Date fechaContratacion, Date fechaFinalContrato, float tasaPorHora, int horasTrabajadas) {
-        super(nombre, id, edad, sexo, fechaContratacion, null);  // Enviar null si no tienes un departamento
+    // Constructor con los parámetros correctos
+    public EmpleadoTemporal(int id, String nombre, int edad, String sexo, Date fechaContratacion, Date fechaFinalContrato, float tasaPorHora) {
+        super(id, nombre, edad, sexo, fechaContratacion, null);  // Enviar null si no tienes un departamento
         this.fechaFinalContrato = fechaFinalContrato;
         this.tasaPorHora = tasaPorHora;
-        this.horasTrabajadas = horasTrabajadas;
+        this.horasTrabajadas = 0;  // Inicializamos las horas trabajadas a 0
+    }
+
+    public EmpleadoTemporal(int id, String carlos, int edad, String m, Date fechaContratacion, Departamento recursosHumanos, int tasaPorHora) {
+        super(id, carlos, edad, m, fechaContratacion, recursosHumanos);
     }
 
     // Getters y Setters
@@ -47,11 +51,26 @@ public class EmpleadoTemporal extends Empleado {
         return TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
     }
 
-    // Implementación de metodo abstracto para calcular salario
+    // Implementación del metodo abstracto para calcular salario
     @Override
     public double calcularSalario() {
         // Cálculo del salario basado en horas trabajadas y la tasa por hora
         return tasaPorHora * horasTrabajadas;
+    }
+
+    @Override
+    public String getRol() {
+        return "";
+    }
+
+    @Override
+    public String getDesempeno() {
+        return "";
+    }
+
+    @Override
+    public Date getFechaIngreso() {
+        return null;
     }
 
     // Implementación de métodos abstractos
@@ -76,7 +95,11 @@ public class EmpleadoTemporal extends Empleado {
     @Override
     public String getDetalles() {
         return "Empleado Temporal - Nombre: " + getNombre() + ", Edad: " + getEdad() + ", Sexo: " + getSexo() +
-                ", Tasa por Hora: " + tasaPorHora + ", Horas Trabajadas: " + horasTrabajadas + ", Duración del contrato: " + getDuracionContratoEnDias() + " días.";
+                ", Tasa por Hora: " + tasaPorHora + ", Horas Trabajadas: " + horasTrabajadas +
+                ", Duración del contrato: " + getDuracionContratoEnDias() + " días.";
     }
 }
+
+
+
 

@@ -3,12 +3,13 @@ package Clases;
 import java.util.Date;
 
 public class EmpleadoPermanente extends Empleado {
-    private String beneficios;
-    private float salarioBase;
+        public static Departamento departamento;
+        private String beneficios;
+        private float salarioBase;
 
     // Constructor
     public EmpleadoPermanente(int id, String nombre, int edad, String sexo, Date fechaContratacion, String beneficios, float salarioBase) {
-        super(id, nombre, edad, sexo, fechaContratacion);  // Simplificación del constructor si no tienes departamento
+        super(id, nombre, edad, sexo, fechaContratacion, departamento);  // Llama correctamente al constructor de Empleado
         this.beneficios = beneficios;
         this.salarioBase = salarioBase;
     }
@@ -30,17 +31,33 @@ public class EmpleadoPermanente extends Empleado {
         this.salarioBase = salarioBase;
     }
 
-    public void setDetalles(String detalles) {
-        // Si no necesitas este metodo, podrías eliminarlo o definirlo correctamente
-    }
-
-    // Implementación de metodo abstracto para calcular salario
+    // Implementación del metodo abstracto para calcular salario
     @Override
     public double calcularSalario() {
-        return salarioBase;  // Retorna el salario base como el cálculo de salario
+        return salarioBase;  // Puedes modificar esta fórmula si hay otros cálculos de salario
     }
 
-    // Métodos adicionales
+    @Override
+    public String getRol() {
+        return "";
+    }
+
+    @Override
+    public String getDesempeno() {
+        return "";
+    }
+
+    @Override
+    public Date getFechaIngreso() {
+        return null;
+    }
+
+    @Override
+    public void setHorasTrabajadas(int horas) {
+
+    }
+
+    // Metodos adicionales
     @Override
     public void crear() {
         System.out.println("Creando empleado permanente: " + getNombre());
@@ -65,3 +82,4 @@ public class EmpleadoPermanente extends Empleado {
                 ", Beneficios: " + beneficios + ", Salario Base: " + salarioBase;
     }
 }
+

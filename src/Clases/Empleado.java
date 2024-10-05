@@ -11,7 +11,7 @@ public abstract class Empleado {
     private Departamento departamento;
 
     // Constructor
-    public Empleado(String nombre, int id, int edad, String sexo, Date fechaContratacion, Departamento departamento) {
+    public Empleado(int id, String nombre, int edad, String sexo, Date fechaContratacion, Departamento departamento) {
         this.id = id;
         this.nombre = nombre;
         this.edad = edad;
@@ -71,4 +71,22 @@ public abstract class Empleado {
 
     // Metodo abstracto para calcular salario que será implementado por las subclases
     public abstract double calcularSalario();
+
+    public abstract String getRol();
+
+    public abstract String getDesempeno();
+
+    public abstract Date getFechaIngreso();
+
+    public abstract void setHorasTrabajadas(int horas);
+
+    // Metodos adicionales
+    public abstract void crear();
+
+    public abstract void actualizar(String nombre, int edad, String sexo);
+
+    public abstract void eliminar();
+
+    public abstract String getDetalles();
 }
+

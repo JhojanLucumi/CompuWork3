@@ -8,7 +8,7 @@ public class Departamento {
     private String nombre;
     private String jefeDepartamento;
     private String descripcion;
-    private List<Empleado> empleadosAsignados;
+    private final List<Empleado> empleadosAsignados;
 
     // Constructor
     public Departamento(int id, String nombre, String jefeDepartamento, String descripcion) {
@@ -21,7 +21,10 @@ public class Departamento {
 
     // Constructor adicional con solo el nombre (si es necesario)
     public Departamento(String nombre) {
+        this.id = 0; // O algún valor predeterminado
         this.nombre = nombre;
+        this.jefeDepartamento = ""; // Valor por defecto
+        this.descripcion = ""; // Valor por defecto
         this.empleadosAsignados = new ArrayList<>();
     }
 
@@ -62,7 +65,7 @@ public class Departamento {
         return empleadosAsignados;
     }
 
-    // Métodos para agregar y remover empleados
+    // Metodos para agregar y remover empleados
     public void agregarEmpleado(Empleado empleado) {
         empleadosAsignados.add(empleado);
         System.out.println("Empleado: " + empleado.getNombre() + " asignado al departamento: " + nombre);
@@ -80,14 +83,16 @@ public class Departamento {
 
     // Metodo para obtener detalles del departamento
     public String getDetalles() {
-        StringBuilder detalles = new StringBuilder("Departamento: " + nombre + ", Jefe: " + jefeDepartamento + "\n");
-        detalles.append("Empleados Asignados: \n");
+        StringBuilder detalles = new StringBuilder("Departamento: ").append(nombre)
+                .append(", Jefe: ").append(jefeDepartamento).append("\n")
+                .append("Empleados Asignados: \n");
 
         if (empleadosAsignados.isEmpty()) {
             detalles.append("No hay empleados asignados.\n");
         } else {
             for (Empleado empleado : empleadosAsignados) {
-                detalles.append("- " + empleado.getNombre() + " (ID: " + empleado.getId() + ")\n");
+                detalles.append("- ").append(empleado.getNombre())
+                        .append(" (ID: ").append(empleado.getId()).append(")\n");
             }
         }
 
@@ -103,4 +108,18 @@ public class Departamento {
         }
         return null;
     }
+
+    // Métodos para obtener empleados y jefe
+    public List<Empleado> getEmpleados() {
+        return empleadosAsignados;
+    }
+
+    public String getJefe() {
+        return jefeDepartamento; // Retorna el nombre del jefe
+    }
+
+    public void eliminarEmpleado(EmpleadoPermanente empleado) {
+    }
 }
+
+

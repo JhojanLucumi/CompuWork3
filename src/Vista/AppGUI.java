@@ -6,9 +6,10 @@ import Clases.Empleado;
 import Clases.EmpleadoPermanente;
 import Clases.EmpleadoTemporal;
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.*;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.text.ParseException;
@@ -16,16 +17,16 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class AppGUI extends Application {
-    private EmpleadoController empleadoController = new EmpleadoController();
-    private Departamento departamentoIT = new Departamento("IT");
-    private Departamento departamentoHR = new Departamento("Recursos Humanos");
+    private final EmpleadoController empleadoController = new EmpleadoController();
+    private final Departamento departamentoIT = new Departamento("IT");
+    private final Departamento departamentoHR = new Departamento("Recursos Humanos");
 
     @Override
     public void start(Stage stage) {
         // Layout principal
         VBox layout = new VBox();
         layout.setSpacing(10);
-        layout.setPadding(new javafx.geometry.Insets(10));
+        layout.setPadding(new Insets(10));
 
         // Elementos de la interfaz
         Label label = new Label("Gestión de Empleados");
@@ -64,7 +65,6 @@ public class AppGUI extends Application {
 
         TextArea empleadosArea = new TextArea();
         empleadosArea.setEditable(false);
-        empleadosArea.setPrefHeight(200);
 
         // Acciones de botones
         agregarBtn.setOnAction(e -> {
@@ -75,16 +75,15 @@ public class AppGUI extends Application {
                 String sexo = sexoField.getText();
                 Date fechaContratacion = new SimpleDateFormat("dd/MM/yyyy").parse(fechaField.getText());
                 String tipo = tipoEmpleadoBox.getValue();
-                String depto = departamentoBox.getValue();
-                Departamento departamento = depto.equals("IT") ? departamentoIT : departamentoHR;
+                Departamento departamento = departamentoBox.getValue().equals("IT") ? departamentoIT : departamentoHR;
 
                 if (tipo.equals("Permanente")) {
                     String beneficios = beneficiosField.getText();
                     float salarioBase = Float.parseFloat(salarioField.getText());
-                    EmpleadoPermanente empleado = new EmpleadoPermanente(id, nombre, edad, sexo, fechaContratacion, departamento, beneficios, salarioBase);
+                    EmpleadoPermanente empleado = new EmpleadoPermanente(id, nombre, edad, sexo, fechaContratacion, beneficios, salarioBase);
                     empleadoController.agregarEmpleado(empleado);
                 } else {
-                    EmpleadoTemporal empleado = new EmpleadoTemporal(id, nombre, edad, sexo, fechaContratacion, departamento);
+                    EmpleadoTemporal empleado = new EmpleadoTemporal(id, nombre, edad, sexo, fechaContratacion, departamento, 100);
                     empleadoController.agregarEmpleado(empleado);
                 }
 
@@ -127,7 +126,10 @@ public class AppGUI extends Application {
     }
 
     public static void main(String[] args) {
-        launch();
+        launch(args);
     }
 }
+
+
+
 

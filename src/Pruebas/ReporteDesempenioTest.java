@@ -27,8 +27,8 @@ public class ReporteDesempenioTest {
         // Crear un departamento y algunos empleados
         departamentoIT = new Departamento("IT");
 
-        empleado1 = new EmpleadoPermanente("Ana", 1, 30, "F", new Date(), 5000);
-        empleado2 = new EmpleadoTemporal("Luis", 2, 25, "M", new Date(), 100);
+        empleado1 = new EmpleadoPermanente(1, "Ana", 30, "F", new Date(), "Beneficios Médicos", 5000);
+        empleado2 = new EmpleadoTemporal(2, "Luis", 25, "M", new Date(), departamentoIT, 100);
 
         // Agregar empleados al departamento
         departamentoIT.agregarEmpleado(empleado1);
@@ -57,7 +57,7 @@ public class ReporteDesempenioTest {
     }
 
     @Test
-    void testReporteConMetricasDeDesempeño() {
+    void testReporteConMetricasDeDesempenio() {
         // Prueba donde los empleados tienen diferentes métricas de desempeño
         empleado1.setHorasTrabajadas(160);
         empleado2.setHorasTrabajadas(120);
@@ -75,8 +75,10 @@ public class ReporteDesempenioTest {
         String reporte = reporteController.generarReporteDepartamento(departamentoVacio);
 
         assertNotNull(reporte, "El reporte no debe ser nulo incluso si no hay empleados");
-        assertTrue(reporte.contains("No hay empleados"), "El reporte debe indicar que no hay empleados");
+        assertTrue(reporte.contains("No hay empleados"), "El reporte debe indicar que no hay empleados en el departamento");
     }
 }
+
+
 
 

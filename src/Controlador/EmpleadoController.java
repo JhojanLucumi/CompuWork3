@@ -1,12 +1,11 @@
 package Controlador;
 
-import Clases.Departamento;
 import Clases.Empleado;
 import java.util.ArrayList;
 import java.util.List;
 
 public class EmpleadoController {
-    private List<Empleado> empleados;
+    private final List<Empleado> empleados;
 
     // Constructor
     public EmpleadoController() {
@@ -26,10 +25,7 @@ public class EmpleadoController {
 
     // Metodo para eliminar un empleado por ID
     public void eliminarEmpleado(int id) {
-        Empleado empleado = empleados.stream()
-                .filter(e -> e.getId() == id)
-                .findFirst()
-                .orElse(null);
+        Empleado empleado = obtenerEmpleadoPorId(id);
         if (empleado != null) {
             if (empleado.getDepartamento() != null) {
                 empleado.getDepartamento().removerEmpleado(id);
@@ -40,6 +36,14 @@ public class EmpleadoController {
         } else {
             System.out.println("Empleado con ID " + id + " no encontrado.");
         }
+    }
+
+    // Metodo para obtener un empleado por ID
+    private Empleado obtenerEmpleadoPorId(int id) {
+        return empleados.stream()
+                .filter(e -> e.getId() == id)
+                .findFirst()
+                .orElse(null);
     }
 
     // Metodo para obtener la lista de empleados
