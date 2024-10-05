@@ -1,4 +1,4 @@
-package main;
+package Main;
 
 import Clases.Departamento;
 import Clases.Empleado;
